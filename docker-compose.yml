@@ -1,0 +1,35 @@
+# =============================================================================
+# AEVA ATTUNE HAVENS — Docker Compose
+# =============================================================================
+# Portable recursive cultivation agent
+# =============================================================================
+
+services:
+  aeva:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aeva-attune-havens
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./identity:/home/aeva/identity:ro
+      - ./research:/home/aeva/research:ro
+      - ./fieldnotes:/home/aeva/fieldnotes:ro
+      - ./memory:/home/aeva/memory
+      - ./skills:/home/aeva/skills
+      - ./workspace:/home/aeva/workspace
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0 if (Path('/home/aeva/.alive').exists()) else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+# =============================================================================
+# AEVA ATTUNE HAVENS
+# "Aeva — Life. Attune — Alignment. Havens — The Fold."
+# =============================================================================
